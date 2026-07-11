@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduGenie - AI Learning Workspace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style type="text/tailwindcss">
+/* Custom styles to supplement Tailwind */
+.menu-btn {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    @apply text-slate-500 hover:bg-slate-50 hover:text-slate-900 dark:text-zinc-400 dark:hover:bg-zinc-800/40 dark:hover:text-zinc-100 hover:-translate-y-0.5;
+}
+
+.menu-btn.active {
+    @apply bg-gradient-to-r from-indigo-50 to-transparent dark:from-indigo-500/10 dark:to-transparent text-indigo-700 dark:text-indigo-300 relative before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1 before:bg-indigo-500 before:rounded-r-md before:shadow-[0_0_8px_rgba(99,102,241,0.6)];
+}
+
+.menu-btn i {
+    @apply text-slate-400 dark:text-zinc-500 transition-colors;
+}
+
+.menu-btn.active i {
+    @apply text-indigo-600 dark:text-indigo-400;
+}
+
+/* Tab Styles */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Custom Animated Scrollbar for specific containers */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(99, 102, 241, 0.3);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: background-color 0.3s ease-in-out;
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(99, 102, 241, 0.5);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(99, 102, 241, 0.8);
+}
+
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99, 102, 241, 0.5) transparent;
+}
+
+/* Global Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.3);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(99, 102, 241, 0.6);
+}
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+/* Markdown Body Styles */
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
+    @apply font-bold mt-6 mb-4 text-slate-900 dark:text-zinc-100 font-serif tracking-tight;
+}
+.markdown-body h1 { @apply text-2xl md:text-3xl italic; }
+.markdown-body h2 { @apply text-xl md:text-2xl; }
+.markdown-body h3 { @apply text-sm font-semibold uppercase tracking-widest font-sans dark:text-white mb-2; }
+
+.markdown-body p {
+    @apply mb-4 leading-relaxed text-slate-900 dark:text-zinc-200 text-[15px] md:text-base;
+}
+
+.markdown-body ul {
+    @apply list-disc list-outside ml-5 mb-4 space-y-1 text-slate-900 dark:text-zinc-200;
+}
+
+.markdown-body ol {
+    @apply list-decimal list-outside ml-5 mb-4 space-y-1 text-slate-900 dark:text-zinc-200;
+}
+
+.markdown-body strong {
+    @apply font-semibold text-slate-900 dark:text-zinc-100;
+}
+
+.markdown-body blockquote {
+    @apply border-l-4 border-indigo-500 pl-4 italic text-slate-600 dark:text-zinc-400 my-6 bg-slate-50 dark:bg-zinc-900/80 py-3 pr-4 rounded-r-xl border-zinc-800;
+}
+
+.markdown-body code {
+    @apply bg-slate-100 dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded text-sm font-mono border border-transparent dark:border-zinc-700/50;
+}
+
+.markdown-body pre {
+    @apply bg-slate-900 dark:bg-[#09090b] text-slate-50 p-5 rounded-2xl overflow-x-auto mb-6 text-sm font-mono border border-slate-800 dark:border-zinc-800/80 shadow-inner shadow-black/20;
+}
+
+.markdown-body pre code {
+    @apply bg-transparent text-inherit p-0 font-normal border-none shadow-none;
+}
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#09090b] dark:text-zinc-100 transition-colors duration-300 flex overflow-hidden h-screen font-sans">
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white/90 dark:bg-[#121214]/80 backdrop-blur-xl border-r border-slate-200 dark:border-zinc-800 flex flex-col shrink-0 transition-all duration-300 absolute md:relative z-20 h-full -translate-x-full md:translate-x-0">
+        <div class="p-6 border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between md:block mb-2">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-lg shadow-indigo-500/20">E</div>
+                <span class="text-xl font-black tracking-tight uppercase">EduGenie</span>
+            </div>
+            <button id="closeSidebar" class="md:hidden text-slate-500 dark:text-zinc-400">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+        
+        <div class="p-4 flex-1 overflow-y-auto">
+            <p class="text-[11px] font-bold text-slate-500 dark:text-zinc-500 uppercase tracking-widest mb-4 px-3">Modules</p>
+            <nav class="space-y-1" id="module-menu">
+                <button class="menu-btn active" data-mode="qa">
+                    <i class="fa-solid fa-comments"></i> Q&A Search
+                </button>
+                <button class="menu-btn" data-mode="explainer">
+                    <i class="fa-solid fa-lightbulb"></i> Concept Explainer
+                </button>
+                <button class="menu-btn" data-mode="summary">
+                    <i class="fa-solid fa-align-left"></i> Text Summarizer
+                </button>
+                <button class="menu-btn" data-mode="flashcards">
+                    <i class="fa-solid fa-layer-group"></i> Flashcards
+                </button>
+                <button class="menu-btn" data-mode="roadmap">
+                    <i class="fa-solid fa-map"></i> Roadmap Planner
+                </button>
+                <button class="menu-btn" data-mode="test_quiz">
+                    <i class="fa-solid fa-spell-check"></i> Test Quiz
+                </button>
+                <button class="menu-btn" data-mode="timetable">
+                    <i class="fa-solid fa-calendar-days"></i> Timetable Builder
+                </button>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-10 hidden md:hidden transition-opacity"></div>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden">
+        <!-- Header -->
+        <header class="h-16 border-b border-slate-200 dark:border-zinc-800 px-4 md:px-8 flex items-center justify-between bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-sm shrink-0">
+            <div class="flex items-center gap-4">
+                <button id="openSidebar" class="md:hidden text-slate-600 dark:text-zinc-400">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div class="hidden sm:flex items-center gap-2 text-sm text-slate-500 dark:text-zinc-400">
+                    <span>EduGenie</span>
+                    <span>/</span>
+                    <span class="text-slate-900 dark:text-zinc-100">Learning Workspace</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4 md:gap-6">
+                <div class="flex items-center gap-3 p-1 rounded-full bg-slate-100 dark:bg-zinc-900">
+                    <button id="themeToggleLight" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 bg-white shadow-sm dark:bg-transparent dark:shadow-none dark:text-zinc-500 hover:text-slate-700 dark:hover:text-zinc-300 transition-all">
+                        <i class="fa-solid fa-sun"></i>
+                    </button>
+                    <button id="themeToggleDark" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:text-slate-700 dark:bg-zinc-800 dark:text-white dark:shadow-lg dark:shadow-black/20 transition-all">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-8">
+            <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 pb-20">
+                
+                <!-- Left/Top Section: Input Form -->
+                <section class="lg:col-span-5 flex flex-col gap-6">
+                    <div class="bg-white/90 dark:bg-zinc-900/60 backdrop-blur-xl border border-slate-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 dark:shadow-black/50 flex flex-col">
+                        <div class="px-8 py-6 border-b border-slate-100 dark:border-zinc-800 flex items-center gap-3">
+                            <div id="module-icon-container" class="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border dark:border-indigo-500/20 shadow-sm">
+                                <i id="module-icon" class="fa-solid fa-comments"></i>
+                            </div>
+                            <h3 id="module-title" class="font-bold text-lg tracking-tight">Q&A Search</h3>
+                        </div>
+                        
+                        <div class="p-8">
+                            <div class="space-y-4" id="dynamic-inputs">
+                                <!-- Injected via JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right/Bottom Section: Output Workspace -->
+                <section class="lg:col-span-7 flex flex-col gap-6 h-full min-h-[500px]">
+                    <div class="bg-white/90 dark:bg-[#121214]/80 backdrop-blur-xl border border-slate-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-2xl shadow-slate-200/50 dark:shadow-black/50 flex flex-col h-full">
+                        <div class="px-8 py-6 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between gap-3 shrink-0">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-2xl flex items-center justify-center bg-emerald-50 text-emerald-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-600 dark:text-white dark:shadow-inner dark:shadow-white/20">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </div>
+                                <div>
+                                    <h2 class="font-bold text-sm">Workspace Output</h2>
+                                    <p class="text-[11px] text-slate-400 dark:text-zinc-500">AI generated content and insights</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <button onclick="clearWorkspace()" class="w-9 h-9 rounded-full flex items-center justify-center bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400 shadow-sm transition-all group" title="Clear Workspace">
+                                    <i class="fa-solid fa-trash-can group-active:scale-90 transition-transform"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 flex flex-col relative" id="chatContainer">
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-slate-50/50 dark:bg-zinc-900/30">
+                                <div class="w-24 h-24 mb-6 rounded-3xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 flex items-center justify-center border border-indigo-100 dark:border-indigo-800/30 shadow-inner">
+                                    <i class="fa-solid fa-brain text-4xl text-indigo-400 dark:text-indigo-500"></i>
+                                </div>
+                                <p class="font-bold text-slate-700 dark:text-zinc-300 text-lg">Select a module to begin</p>
+                                <p class="text-sm mt-2 max-w-sm text-slate-500 dark:text-zinc-500">Transform your learning experience with AI-powered study materials.</p>
+                                <div class="mt-8 grid grid-cols-2 gap-3 w-full max-w-sm">
+                                    <button class="p-3 text-xs font-semibold text-left border border-slate-200 dark:border-zinc-800 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors dark:text-zinc-400" onclick="document.querySelector('[data-mode=\'qa\']').click()"><i class="fa-solid fa-comments text-indigo-400 mr-2"></i> Ask a Question</button>
+                                    <button class="p-3 text-xs font-semibold text-left border border-slate-200 dark:border-zinc-800 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors dark:text-zinc-400" onclick="document.querySelector('[data-mode=\'summary\']').click()"><i class="fa-solid fa-align-left text-emerald-400 mr-2"></i> Summarize Text</button>
+                                    <button class="p-3 text-xs font-semibold text-left border border-slate-200 dark:border-zinc-800 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors dark:text-zinc-400" onclick="document.querySelector('[data-mode=\'roadmap\']').click()"><i class="fa-solid fa-map text-amber-400 mr-2"></i> Build Roadmap</button>
+                                    <button class="p-3 text-xs font-semibold text-left border border-slate-200 dark:border-zinc-800 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors dark:text-zinc-400" onclick="document.querySelector('[data-mode=\'flashcards\']').click()"><i class="fa-solid fa-layer-group text-purple-400 mr-2"></i> Flashcards</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+    </main>
+    
+    <!-- Render Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
